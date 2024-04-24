@@ -1,6 +1,6 @@
 ---
 title: "Identification of age-related CpG sites from longitudinal DNA methylation data of two avian species"
-author: "Marianthi Tangili, Joanna Sudyka, Fabricio Furni"
+authors: "Marianthi Tangili, Joanna Sudyka, Fabricio Furni"
 date: "24/04/2024"
 ---
 

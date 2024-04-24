@@ -1,0 +1,81 @@
+##Marianthi Tangili & Joanna Sudyka
+##Nov 2022
+#this script is based on jackdaw samples (JD001-JD022), analogous process was followed for zebra finch samples
+#all samples were run in 2 lanes so we processed data for *L001* and *L002* and with *R1* (forward read) and *R2* (reverse read) per sample
+#samples were received from sequencing facility as *.fastq and *.fastq.gz.md5 files, a total of 8 files per sample
+
+###STEP 1
+##this step was performed via computational cluster (Peregrine/Habrok)
+#reference genome preparation/bisulfite conversion in Bismark
+#download NCBI: bCorHaw1.pri.cur to a Genome folder
+#prepare separately for males without W chromosome, remove W from the Genome folder and prepare again for females
+#this step results in *.bt2 files for CT conversion and GA_conversion
+bismark_genome_preparation /corvus_hawaiiensis_Genome/
+
+
+###STEP 2
+##this step was performed via computational cluster (Peregrine)
+#Check all file integrity
+md5sum -c *.md5
+
+###STEP 3
+##this step was performed via computational cluster (Peregrine)
+#check if R1 and R2 match
+#all files
+sdiff <(zcat $_JD0$_S$_L001_R1_001.fastq.gz| grep @| head -20) <(zcat $_JD0$_S$_L001_R2_001.fastq.gz| grep @| head -20) | less
+sdiff <(zcat $_JD0$_S$_L002_R1_001.fastq.gz| grep @| head -20) <(zcat $_JD0$_S$_L002_R2_001.fastq.gz| grep @| head -20) | less
+#single file
+sdiff <(zcat *L001_R2_001.fastq.gz| grep @| head -20) <(zcat *L001_R1_001.fastq.gz| grep @| head -20) | less
+
+###STEP 4
+##this step was performed via computational cluster (Peregrine)
+#quality control via FastQC
+#this step results in *fastqc.html files readable online: FastQC Report
+fastqc *fastq.gz
+#quality control via MultiQC
+#this step results in *multiqc_report.html readable online: MultiQC Report
+multiqc -- *fastqc.zip
+
+###STEP 5
+##this step was performed via computational cluster (Peregrine)
+#adapter sequence trimming via Trim_Galore
+#we trimmed 10 bp from the forward read and 20 bp from the reverse read
+#this step results in *val_1.fq.gz (for R1) and *val_2.fq.gz (for R2) files
+#FastQC is performed automatically on the output files after trimming
+trim_galore --clip_r1 10 --clip_r2 20 --paired --fastqc *L001_R1_001.fastq.gz *L001_R2_001.fastq.gz
+trim_galore --clip_r1 10 --clip_r2 20 --paired --fastqc *L002_R1_001.fastq.gz *L002_R2_001.fastq.gz
+
+###STEP 6
+##this step was performed via computational cluster (Peregrine)
+#quality control via MultiQC after trimming
+#this step results in *multiqc_report.html readable online: MiltiQC Report
+multiqc -- *fastqc.zip
+
+###STEP 7
+##this step was performed via computational cluster (Peregrine)
+#alignment to the reference genome in Bismark
+#separate for female samples and male samples
+#this step results in *.val_1_bismark_bt2_pe.bam files
+#R1 and R2 are merged in this step so all steps from now on are run for one file per sample, per lane
+#lane 1
+bismark /corvus_hawaiiensis_Genome/ -1 *L001_R1_001_val_1.fq.gz -2 *L001_R2_001_val_2.fq.gz  
+#lane 2
+bismark /corvus_hawaiiensis_Genome/ -1 *L002_R1_001_val_1.fq.gz -2 *L002_R2_001_val_2.fq.gz  
+
+###STEP 8
+##this step was performed via computational cluster (Peregrine)
+#merge *.val_1_bismark_bt2_pe.bam files from all lanes per each sample via SAMtools
+#this step results in a single *.bam file per sample
+samtools merge S*.bam *_L001_R1_001_val_1_bismark_bt2_pe.bam *_L002_R1_001_val_1_bismark_bt2_pe.bam
+
+###STEP 9
+##this step was performed via computational cluster (Peregrine)
+#deduplication
+#this step results in *.deduplicated.bam file
+deduplicate_bismark --bam S*.bam
+
+###STEP 10
+##this step was performed via computational cluster (Peregrine)
+#methylation extraction in Bismark
+#this step results in *.deduplicated.bismark.cov file, *.deduplicated.bedGraph, *.deduplicated.M-bias and *.deduplicated_splitting_report files per sample
+bismark_methylation_extractor --bedGraph --gzip S*.deduplicated.bam

@@ -14,7 +14,7 @@ Running the initial part of the pipeline for identification of age-related CpG s
 Code #3:
 Functional annotation of all CpG sites captured by our analysis
 
-Code #3:
+Code #4:
 Finals steps of the pipeline
 Functional annotation of age-related CpG sites
 Statistical analyses

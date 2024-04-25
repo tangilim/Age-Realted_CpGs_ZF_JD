@@ -4,18 +4,21 @@ authors: "Marianthi Tangili, Joanna Sudyka, Fabricio Furni"
 date: "24/04/2024"
 ---
 
-Code #1:
+01:
 Bioinformatics code for DNA methylation extraction from WGBS and EMSeq data
 
-Code #2:
+02:
 Merging DNA methylation measurements per CpG site per sample in one data frame per species
 Running the initial part of the pipeline for identification of age-related CpG sites
 
-Code #3:
+03:
 Functional annotation of all CpG sites captured by our analysis
 
-Code #4:
+04:
 Finals steps of the pipeline
 Functional annotation of age-related CpG sites
 Statistical analyses
 Plots
+
+Information about each step is found as comments in the scripts
+Scripts 01,02,03 were run using the hpc of the University of Groningen Hábrók (https://www.rug.nl/society-business/centre-for-information-technology/research/services/hpc/facilities/habrok-hpc-cluster?lang=en)

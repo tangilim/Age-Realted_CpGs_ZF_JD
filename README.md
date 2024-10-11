@@ -15,7 +15,7 @@ Running the initial part of the pipeline for identification of age-related CpG s
 Functional annotation of all CpG sites captured by our analysis
 
 04:
-Finals steps of the pipeline
+Final steps of the pipeline
 Functional annotation of age-related CpG sites
 Statistical analyses
 Plots

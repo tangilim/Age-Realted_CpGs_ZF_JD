@@ -25,3 +25,5 @@ preprint: https://www.biorxiv.org/content/10.1101/2024.07.31.605993v1
 Information about each step is found as comments in the scripts 
 
 Scripts 01,02,03 were run using the hpc of the University of Groningen Hábrók (https://www.rug.nl/society-business/centre-for-information-technology/research/services/hpc/facilities/habrok-hpc-cluster?lang=en)
+
+The raw sequencing data used in this paper (for both species) can be found at: https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA1108628

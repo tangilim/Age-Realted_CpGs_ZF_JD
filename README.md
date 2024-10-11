@@ -8,15 +8,15 @@ date: "24/04/2024"
 Bioinformatics code for DNA methylation extraction from WGBS and EMSeq data
 
 02:
-Merging DNA methylation measurements per CpG site per sample in one data frame per species
+Merging DNA methylation measurements per CpG site per sample in one data frame per species<br/>
 Running the initial part of the pipeline for identification of age-related CpG sites
 
 03:
 Functional annotation of all CpG sites captured by our analysis
 
 04:
-Final steps of the pipeline
-Functional annotation of age-related CpG sites
+Final steps of the pipeline<br/>
+Functional annotation of age-related CpG sites <br/>
 Statistical analyses	<br/>
 Plots
 
